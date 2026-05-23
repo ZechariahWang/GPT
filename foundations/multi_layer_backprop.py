@@ -40,18 +40,3 @@ class Solution:
             'dW2':   (np.round(dW2, 4)+0.0).tolist(),
             'db2':   (np.round(db2, 4)+0.0).tolist(),
         }
-
-
-
-
-
-
-
-
-        # Return dict with keys:
-        #   'loss':  float (MSE loss, rounded to 4 decimals)
-        #   'dW1':   2D list (gradient w.r.t. W1, rounded to 4 decimals)
-        #   'db1':   1D list (gradient w.r.t. b1, rounded to 4 decimals)
-        #   'dW2':   2D list (gradient w.r.t. W2, rounded to 4 decimals)
-        #   'db2':   1D list (gradient w.r.t. b2, rounded to 4 decimals)
-        pass
