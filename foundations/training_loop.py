@@ -14,8 +14,9 @@ class Solution:
         # Loss: MSE = (1/n) * sum((y_hat - y)^2)
         # Initialize w = zeros, b = 0
         # return (np.round(w, 5), round(b, 5))
-        n = X.shape[0]
-        w = np.zeros(X.shape[1])
+
+        n = X.shape[0] # grabs the number of samples (rows) in your data. X has shape (n_samples, n_features), so .shape is a tuple like (100, 3)
+        w = np.zeros(X.shape[1]) # creates the weight vector, initialized to all zeros. X.shape[1] is the number of features (columns), so if you have 3 features, this makes np.array([0.0, 0.0, 0.0]) 
         b = 0.0
 
         for i in range(epochs):
