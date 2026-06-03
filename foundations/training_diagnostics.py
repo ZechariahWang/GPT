@@ -10,16 +10,19 @@ class Solution:
         # Run with torch.no_grad(). Round to 4 decimals.
         stats = []
         with torch.no_grad():
-            for module in model.children():
+            for module in model.children(): # visit each block: Linear, ReLU, Linear, ReLU, Linear
                 x = module(x)
+                # if its linear its weighting is complete, right before non-linearity phase (reul, sigmoid, etc)
                 if isinstance(module, nn.Linear):
                     mean = round(x.mean().item(), 4)
                     std = round(x.std().item(), 4)
-                    if x.dim() >= 2:
+                    if x.dim() >= 2: # if it was a 1D tensor, then first param is neurons, which we dont want to collapse, so we do a check first
                         is_negative = (x <= 0)
-                        dead_units = is_negative.all(dim = 0)
+                        dead_units = is_negative.all(dim = 0) # collapse happens here
+                        # batch of booleans -> batch of float nums -> tensor(one number) -> one number -> round num
                         dead_frac = round(dead_units.float().mean().item(), 4)
                     else:
+                        # just one batch, so only dim is neurons, so we dont need all func
                         is_negative = (x <= 0)
                         dead_frac = round(is_negative.float().mean().item(), 4)
                     stats.append({"mean" : mean, "std" : std, "dead_fraction" : dead_frac})
@@ -41,7 +44,7 @@ class Solution:
         stats = []
         for module in model.children():
             if isinstance(module, nn.Linear):
-                grad = module.weight.grad
+                grad = module.weight.grad # we use grad bc the function is compute_grad_stats lol
                 mean = round(grad.mean().item(), 4)
                 std = round(grad.std().item(), 4)
                 norm = round(torch.norm(grad).item(), 4)
