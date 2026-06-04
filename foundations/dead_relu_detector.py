@@ -12,7 +12,8 @@ class Solution:
         # Return a list of dead fractions (one per ReLU layer), rounded to 4 decimals.
         dead_fractions = []
         for module in model.children():
-            x = module(x)
+            # ex structure per loop iteration: x (input) → Linear₁ → x₁ → ReLU₁ → x₂ → Linear₂ → x₃ → ReLU₂ → x₄
+            x = module(x) # need to update x
             if isinstance(module, nn.ReLU):
                 dead = (x == 0).all(dim=0)
                 dead = dead.float().mean().item()
